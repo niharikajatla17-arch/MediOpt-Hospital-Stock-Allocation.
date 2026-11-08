@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MediOpt | Hospital Stock Allocation</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<aside class="sidebar">
+    <h2>✚ MediOpt</h2>
+
+    <p class="nav-label">WORKSPACE</p>
+
+    <a href="#dashboard">▦ Dashboard</a>
+    <a href="#inventory">▤ Inventory</a>
+    <a href="#budget">₹ Budget Allocation</a>
+    <a href="#optimization">⚙ Optimization</a>
+
+    <div class="side-note">
+        <h4>Smarter Hospital Planning</h4>
+        <p>Allocate essential medical resources within your budget.</p>
+    </div>
+</aside>
+
+
+<main>
+
+    <!-- DASHBOARD HEADER -->
+    <header id="dashboard">
+        <p class="eyebrow">HOSPITAL RESOURCE MANAGEMENT</p>
+
+        <h1>Dashboard</h1>
+
+        <p>Manage hospital stock with algorithmic optimization.</p>
+    </header>
+
+
+    <!-- HERO -->
+    <section class="hero">
+        <div>
+            <p>MEDIOPT OVERVIEW</p>
+
+            <h2>Make every rupee count.</h2>
+
+            <span>
+                Plan medical purchases efficiently within your budget.
+            </span>
+        </div>
+
+        <div class="hero-icon">✚</div>
+    </section>
+
+
+    <!-- DASHBOARD STATISTICS -->
+    <section class="stats">
+
+        <div class="stat-card">
+            <p>INVENTORY ITEMS</p>
+
+            <h2 id="itemCount">0</h2>
+
+            <span>Medicines and equipment</span>
+        </div>
+
+        <div class="stat-card">
+            <p>HOSPITAL BUDGET</p>
+
+            <h2 id="budgetDisplay">₹0</h2>
+
+            <span>Purchasing limit</span>
+        </div>
+
+        <div class="stat-card">
+            <p>TOTAL PRIORITY</p>
+
+            <h2 id="priorityDisplay">—</h2>
+
+            <span>0/1 Knapsack result</span>
+        </div>
+
+    </section>
+
+
+    <!-- INVENTORY AND ADD ITEM -->
+    <section class="content">
+
+        <!-- INVENTORY TABLE -->
+        <div class="panel" id="inventory">
+
+            <div class="panel-heading">
+                <h3>Inventory Items</h3>
+
+                <span id="inventoryPill">0 items</span>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ITEM</th>
+                        <th>CATEGORY</th>
+                        <th>COST</th>
+                        <th>PRIORITY</th>
+                        <th>ACTION</th>
+                    </tr>
+                </thead>
+
+                <tbody id="inventoryBody"></tbody>
+            </table>
+
+            <div id="emptyState" class="empty">
+                <h3>Your inventory is empty</h3>
+
+                <p>
+                    Add medicines or equipment using the form.
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- ADD ITEM FORM -->
+        <div class="panel">
+
+            <h3>Add a Stock Item</h3>
+
+            <p class="muted">
+                Enter the item details below.
+            </p>
+
+            <form id="itemForm">
+
+                <label for="itemName">Item Name</label>
+
+                <input
+                    id="itemName"
+                    type="text"
+                    placeholder="Oxygen Cylinder"
+                    required
+                >
+
+
+                <label for="itemCategory">Category</label>
+
+                <select id="itemCategory" required>
+                    <option value="">Select category</option>
+                    <option>Medicine</option>
+                    <option>Medical Equipment</option>
+                    <option>Protective Supplies</option>
+                    <option>Other</option>
+                </select>
+
+
+                <div class="two-fields">
+
+                    <div>
+                        <label for="itemCost">Cost per Unit (₹)</label>
+
+                        <input
+                            id="itemCost"
+                            type="number"
+                            min="1"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label for="itemPriority">
+                            Priority per Unit
+                        </label>
+
+                        <input
+                            id="itemPriority"
+                            type="number"
+                            min="1"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+
+                <label for="itemQuantity">Quantity</label>
+
+                <input
+                    id="itemQuantity"
+                    type="number"
+                    min="1"
+                    step="1"
+                    required
+                >
+
+
+                <button type="submit">
+                    + Add Inventory Item
+                </button>
+
+                <p id="formMessage"></p>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- BUDGET -->
+    <section class="panel budget-panel" id="budget">
+
+        <div>
+            <h3>Set Hospital Budget</h3>
+
+            <p class="muted">
+                Enter the maximum purchasing amount.
+            </p>
+        </div>
+
+        <form id="budgetForm">
+
+            <input
+                id="budgetInput"
+                type="number"
+                placeholder="Enter budget (₹)"
+                min="1"
+                required
+            >
+
+            <button type="submit">
+                Save Budget
+            </button>
+
+        </form>
+
+        <p id="budgetMessage"></p>
+
+    </section>
+
+
+    <!-- OPTIMIZATION -->
+    <section class="optimization-section panel" id="optimization">
+
+        <div class="optimization-heading">
+            <p class="eyebrow">SMART ALLOCATION</p>
+
+            <h2>Budget Optimization</h2>
+
+            <p class="muted">
+                Compare 0/1 Knapsack using Dynamic Programming
+                with Fractional Knapsack using a Greedy strategy.
+            </p>
+        </div>
+
+        <button id="optimizeButton" type="button">
+            Optimize Inventory
+        </button>
+
+        <p id="optimizationMessage"></p>
+
+
+        <!-- ALGORITHM RESULTS -->
+        <div id="optimizationResults" style="display: none;">
+
+            <div class="algorithm-comparison">
+
+
+                <!-- 0/1 KNAPSACK -->
+                <div class="algorithm-panel">
+
+                    <div class="algorithm-title">
+                        <span class="algorithm-number">01</span>
+
+                        <div>
+                            <h3>0/1 Knapsack</h3>
+
+                            <p>Dynamic Programming</p>
+                        </div>
+                    </div>
+
+                    <div class="algorithm-description">
+                        Each inventory lot is either selected
+                        completely or skipped.
+                    </div>
+
+
+                    <div class="result-summary">
+
+                        <div class="summary-row">
+                            <span>Clinical Priority</span>
+
+                            <strong id="zeroOnePriority">0</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Total Cost</span>
+
+                            <strong id="zeroOneCost">₹0</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Remaining Budget</span>
+
+                            <strong id="zeroOneRemaining">₹0</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Budget Utilization</span>
+
+                            <strong id="zeroOneUtilization">0%</strong>
+                        </div>
+
+                        <div class="progress-track">
+                            <div
+                                id="zeroOneProgress"
+                                class="progress-fill"
+                            ></div>
+                        </div>
+
+                    </div>
+
+
+                    <h4>Selected Lots</h4>
+
+                    <ul
+                        id="zeroOneSelected"
+                        class="allocation-grid"
+                    ></ul>
+
+
+                    <h4>Skipped Lots</h4>
+
+                    <ul
+                        id="zeroOneSkipped"
+                        class="allocation-grid"
+                    ></ul>
+
+                </div>
+
+
+
+                <!-- FRACTIONAL KNAPSACK -->
+                <div class="algorithm-panel">
+
+                    <div class="algorithm-title">
+                        <span class="algorithm-number">02</span>
+
+                        <div>
+                            <h3>Fractional Knapsack</h3>
+
+                            <p>Greedy Algorithm</p>
+                        </div>
+                    </div>
+
+                    <div class="algorithm-description">
+                        Lots are selected according to their
+                        priority-to-cost ratio. Partial lots are allowed.
+                    </div>
+
+
+                    <div class="result-summary">
+
+                        <div class="summary-row">
+                            <span>Clinical Priority</span>
+
+                            <strong id="fractionalPriority">0</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Total Cost</span>
+
+                            <strong id="fractionalCost">₹0</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Remaining Budget</span>
+
+                            <strong id="fractionalRemaining">₹0</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Budget Utilization</span>
+
+                            <strong id="fractionalUtilization">0%</strong>
+                        </div>
+
+                        <div class="progress-track">
+                            <div
+                                id="fractionalProgress"
+                                class="progress-fill fractional-fill"
+                            ></div>
+                        </div>
+
+                    </div>
+
+
+                    <h4>Allocated Lots</h4>
+
+                    <ul
+                        id="fractionalSelected"
+                        class="allocation-grid"
+                    ></ul>
+
+
+                    <h4>Unallocated Lots</h4>
+
+                    <ul
+                        id="fractionalSkipped"
+                        class="allocation-grid"
+                    ></ul>
+
+                </div>
+
+            </div>
+
+
+            <!-- COMPARISON -->
+            <div class="comparison-summary">
+
+                <h3>Algorithm Comparison</h3>
+
+                <p id="comparisonMessage">
+                    Run optimization to compare both algorithms.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+        <b>MediOpt</b>
+
+        <span>
+            DAA Project | Hospital Stock Allocation
+        </span>
+    </footer>
+
+</main>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
